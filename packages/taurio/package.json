@@ -1,6 +1,6 @@
 {
   "name": "@hanskristoffer/taurio",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Tauri 2 app kit to pair with HeroUI: updater lifecycle, native dialogs, system theme, the vibrancy app shell and a macOS theme for HeroUI.",
   "license": "MIT OR Apache-2.0",
   "repository": {
