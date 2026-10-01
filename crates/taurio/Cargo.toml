@@ -1,6 +1,6 @@
 [package]
 name = "taurio"
-version = "0.0.0"
+version = "0.1.0"
 description = "Shared Tauri 2 native setup: window appearance and common plugin registration"
 authors = ["Hans Kristoffer"]
 edition = "2021"
