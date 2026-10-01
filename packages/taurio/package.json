@@ -1,0 +1,62 @@
+{
+  "name": "@hanskristoffer/taurio",
+  "version": "0.0.0",
+  "description": "Shared Tauri 2 desktop helpers: updater lifecycle, toasts, app shell, settings controls and theme.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HansKristoffer/taurio.git",
+    "directory": "packages/taurio"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "default": "./dist/runtime/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    },
+    "./tokens.css": "./dist/styles/tokens.css",
+    "./base.css": "./dist/styles/base.css",
+    "./components.css": "./dist/styles/components.css",
+    "./styles.css": "./dist/styles/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp -R src/styles dist/styles",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "peerDependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-process": "^2",
+    "@tauri-apps/plugin-updater": "^2",
+    "react": "^19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^20.14.5",
+    "@tauri-apps/api": "^2.12.1",
+    "@tauri-apps/plugin-process": "^2.4.0",
+    "@tauri-apps/plugin-updater": "^2.13.1",
+    "@types/bun": "^1.4.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

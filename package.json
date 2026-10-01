@@ -1,0 +1,17 @@
+{
+  "name": "taurio-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter @hanskristoffer/taurio build",
+    "test": "bun run --filter @hanskristoffer/taurio test",
+    "typecheck": "bun run --filter '*' typecheck",
+    "check:native": "cargo clippy --all-features --all-targets -- -D warnings && cargo clippy --all-features --target aarch64-apple-ios-sim -- -D warnings && cargo test --all-features",
+    "check": "bun run build && bun run typecheck && bun run test && bun run --filter taurio-example build && bun run check:native"
+  },
+  "packageManager": "bun@1.4.2"
+}

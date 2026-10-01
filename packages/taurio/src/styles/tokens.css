@@ -1,0 +1,113 @@
+/* Design tokens: a frosted sidebar on macOS vibrancy and one inset card holding
+   the content. Colour tokens are unprefixed so app CSS keeps reading them;
+   the --tau-* dimensions are the knobs an app overrides on :root. */
+:root {
+  --card: #ffffff;
+  --side-fg: #1d1d1f;
+  --side-fg-2: #5f5f66;
+  --side-row: rgba(255, 255, 255, 0.55);
+  --side-row-hover: rgba(255, 255, 255, 0.3);
+  --side-chip: rgba(0, 0, 0, 0.06);
+  /* Fields sitting on the sidebar's frosted background. */
+  --side-field: rgba(255, 255, 255, 0.45);
+  --side-field-hover: rgba(255, 255, 255, 0.65);
+  --side-field-focus: rgba(255, 255, 255, 0.85);
+  --side-field-ring: rgba(0, 0, 0, 0.07);
+  --fg: #1d1d1f;
+  --fg-2: #6e6e73;
+  --fg-3: #a1a1a6;
+  --line: #ececef;
+  --chip: #f1f1f3;
+  --chip-fg: #3a3a3f;
+  --hover: rgba(0, 0, 0, 0.08);
+  --seg: #ededef;
+  --seg-active: #ffffff;
+  --primary: #111113;
+  --primary-fg: #ffffff;
+  --accent: #2f6fed;
+  --rec: #e5484d;
+  --ok: #30a46c;
+  --warn: #f5a524;
+  --selection: #b4d5fe;
+  --switch-off: #e3e3e7;
+  --tip-bg: #1d1d1f;
+  --tip-fg: #ffffff;
+  /* Painted behind everything where there is no vibrancy (html.tau-no-vibrancy). */
+  --window-bg: #f2f2f7;
+  --radius-card: 14px;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --pill: 999px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --ease: cubic-bezier(0.22, 0.61, 0.25, 1);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  /* Shell. */
+  --tau-sidebar-width: 240px;
+  /* 0 holds the width; 1 lets the sidebar give ground before the card does. */
+  --tau-sidebar-shrink: 0;
+  --tau-sidebar-min-width: 0px;
+  --tau-card-margin: 12px;
+  --tau-card-min-width: 0px;
+  --tau-titlebar-height: 56px;
+  /* Where the first titlebar control starts: clear of the macOS traffic lights. */
+  --tau-titlebar-left: 88px;
+  --tau-titlebar-btn: 28px;
+  /* Controls. */
+  --tau-control-height: 30px;
+  --tau-control-font-size: 13px;
+  --tau-field-height: 32px;
+  --tau-field-font-size: 13px;
+  --tau-row-min-height: 52px;
+  --tau-section-gap: 26px;
+  --tau-group-title-size: 13px;
+  --tau-group-title-color: var(--fg);
+  --tau-toast-right: 24px;
+  --tau-toast-bottom: 24px;
+
+  /* Native controls (select menus, scrollbars, checkboxes) follow the system too. */
+  color-scheme: light dark;
+}
+
+/* Dark mode only swaps tokens. The vibrancy darkens by itself, so the sidebar's
+   text and fills just have to turn light. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card: #1c1c1e;
+    --side-fg: #f5f5f7;
+    --side-fg-2: rgba(235, 235, 245, 0.6);
+    --side-row: rgba(255, 255, 255, 0.14);
+    --side-row-hover: rgba(255, 255, 255, 0.07);
+    --side-chip: rgba(255, 255, 255, 0.1);
+    --side-field: rgba(255, 255, 255, 0.08);
+    --side-field-hover: rgba(255, 255, 255, 0.12);
+    --side-field-focus: rgba(255, 255, 255, 0.16);
+    --side-field-ring: rgba(255, 255, 255, 0.08);
+    --fg: #f5f5f7;
+    --fg-2: #98989d;
+    --fg-3: #636366;
+    --line: #38383a;
+    --chip: #2c2c2e;
+    --chip-fg: #e5e5ea;
+    --hover: rgba(255, 255, 255, 0.1);
+    --seg: #2c2c2e;
+    --seg-active: #58585c;
+    --primary: #f5f5f7;
+    --primary-fg: #1c1c1e;
+    --accent: #0a84ff;
+    --rec: #ff453a;
+    --ok: #30d158;
+    --warn: #ffb340;
+    --selection: rgba(10, 132, 255, 0.45);
+    --switch-off: #39393d;
+    --tip-bg: #3a3a3c;
+    --tip-fg: #f5f5f7;
+    --window-bg: #000000;
+    /* A shadow alone is lost on a dark background, so the card gets a hairline. */
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3),
+      0 0 0 0.5px rgba(255, 255, 255, 0.08);
+    --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+}

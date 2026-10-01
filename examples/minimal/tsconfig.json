@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    // Off on purpose: this is what checks the package's .d.ts files.
+    "skipLibCheck": false,
+    "noEmit": true
+  },
+  "include": ["src"]
+}

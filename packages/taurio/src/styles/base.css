@@ -1,0 +1,66 @@
+/* Element defaults. An explicit import: it styles bare elements, so an app
+   opts in rather than getting it with the components. Selectors use :where()
+   to stay at zero specificity, so any app rule wins over them. */
+:where(*) { box-sizing: border-box; }
+:where(html, body, #root) { height: 100%; margin: 0; }
+/* Stops iOS inflating body text when a phone is turned to landscape. */
+:where(html) { -webkit-text-size-adjust: 100%; }
+:where(body) {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--fg);
+  /* The window is transparent; macOS vibrancy paints behind it. */
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+/* No vibrancy (iOS, Windows): paint the window or the app renders on black. */
+:where(html.tau-no-vibrancy body) { background: var(--window-bg); }
+
+:where(button) { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; }
+:where(input, textarea, select) { font-family: inherit; color: var(--fg); }
+:where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, select) {
+  width: 100%; min-width: 0; min-height: var(--tau-field-height); padding: 6px 10px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--card);
+  font-size: var(--tau-field-font-size);
+}
+:where(textarea) { resize: vertical; line-height: 1.5; }
+/* WebKit draws a native popup button that ignores height, border and padding,
+   so a select loses its own appearance to match the inputs beside it. The menu
+   it opens stays native. The chevron is two gradient halves in --fg-2, so it
+   follows the theme without an image per colour scheme. */
+:where(select) {
+  appearance: none; -webkit-appearance: none;
+  padding-right: 28px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg-2) 50%),
+    linear-gradient(135deg, var(--fg-2) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 55%, calc(100% - 11px) 55%;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+}
+:where(input[type="checkbox"], input[type="radio"]) {
+  width: 16px; height: 16px; margin: 0; flex: 0 0 auto; accent-color: var(--primary);
+}
+
+:where(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Field states. Order matters: these share zero specificity, so invalid wins
+   over focus and focus over the plain outline above. */
+:where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]):focus, textarea:focus, select:focus) {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+:where(input[readonly], textarea[readonly]) { color: var(--fg-2); background: var(--chip); }
+:where(input:disabled, select:disabled, textarea:disabled) { opacity: 0.55; cursor: not-allowed; }
+:where([aria-invalid="true"]) { border-color: var(--rec); }
+:where([aria-invalid="true"]:focus) {
+  border-color: var(--rec); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rec) 22%, transparent);
+}
+
+/* Below 16 px iOS zooms the page when a field takes focus and never zooms
+   back. Touch, not width: a narrow desktop window keeps the smaller text. */
+@media (pointer: coarse) {
+  :where(input, textarea, select) { font-size: 16px; }
+}
+::selection { background: var(--selection); }

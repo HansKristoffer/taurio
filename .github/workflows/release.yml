@@ -1,0 +1,55 @@
+name: release
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  # Keeps a release PR open with the next version and changelog. Merging it
+  # bumps the npm package and the crate together, tags vX.Y.Z and creates the
+  # GitHub release. The tag is the Rust release: consumers pin it as a git dep.
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      created: ${{ steps.release.outputs.release_created }}
+      tag: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm provenance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run typecheck
+      - run: bun run test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Skips a version already on npm, so a failed run can be rerun.
+      - name: npm publish
+        working-directory: packages/taurio
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if npm view "@hanskristoffer/taurio@$version" version >/dev/null 2>&1; then
+            echo "@hanskristoffer/taurio@$version is already published"
+          else
+            npm publish
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Provenance needs a public repository.
+          NPM_CONFIG_PROVENANCE: ${{ !github.event.repository.private }}
