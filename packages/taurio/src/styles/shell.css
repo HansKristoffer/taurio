@@ -1,0 +1,131 @@
+/* The Tauri app around HeroUI: a transparent window for macOS vibrancy, a
+   frosted sidebar and one inset card. Colours come from theme.css (HeroUI's
+   variables); the --tau-* tokens are the shell's own, and the dimensions are
+   the knobs an app overrides on :root. */
+:root {
+  --tau-sidebar-width: 240px;
+  /* 0 holds the width; 1 lets the sidebar give ground before the card does. */
+  --tau-sidebar-shrink: 0;
+  --tau-sidebar-min-width: 0px;
+  --tau-card-margin: 12px;
+  --tau-card-min-width: 0px;
+  --tau-card-radius: 14px;
+  --tau-titlebar-height: 56px;
+  /* Where the first titlebar control starts: clear of the macOS traffic lights. */
+  --tau-titlebar-left: 88px;
+  --tau-ease: cubic-bezier(0.22, 0.61, 0.25, 1);
+
+  /* Text and fills on the sidebar's vibrancy. */
+  --tau-side-fg: #1d1d1f;
+  --tau-side-fg-2: #5f5f66;
+  --tau-side-row: rgba(255, 255, 255, 0.55);
+  --tau-side-row-hover: rgba(255, 255, 255, 0.3);
+  --tau-side-chip: rgba(0, 0, 0, 0.06);
+  --tau-side-field: rgba(255, 255, 255, 0.45);
+  --tau-side-field-hover: rgba(255, 255, 255, 0.65);
+  --tau-side-field-ring: rgba(0, 0, 0, 0.07);
+  --tau-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.dark,
+[data-theme="dark"] {
+  --tau-side-fg: #f5f5f7;
+  --tau-side-fg-2: rgba(235, 235, 245, 0.6);
+  --tau-side-row: rgba(255, 255, 255, 0.14);
+  --tau-side-row-hover: rgba(255, 255, 255, 0.07);
+  --tau-side-chip: rgba(255, 255, 255, 0.1);
+  --tau-side-field: rgba(255, 255, 255, 0.08);
+  --tau-side-field-hover: rgba(255, 255, 255, 0.12);
+  --tau-side-field-ring: rgba(255, 255, 255, 0.08);
+  /* A shadow alone is lost on a dark background, so the card gets a hairline. */
+  --tau-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 0.5px rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- window ---------- */
+html, body, #root { height: 100%; margin: 0; }
+/* Stops iOS inflating body text when a phone is turned to landscape. */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-size: 14px;
+  color: var(--foreground);
+  /* The window is transparent; macOS vibrancy paints behind it. */
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+/* No vibrancy (iOS, Windows): paint the window or the app renders on black. */
+html.tau-no-vibrancy body { background: var(--background); }
+
+/* ---------- shell ---------- */
+/* Window dragging is driven by data-tauri-drag-region (AppShell), not CSS:
+   -webkit-app-region is a Chromium property and does nothing in the WebKit
+   webview on macOS. dvh, not vh: on iOS 100vh sits behind the home indicator. */
+.tau-app { display: flex; height: 100dvh; position: relative; }
+
+.tau-sidebar {
+  width: var(--tau-sidebar-width);
+  flex: 0 var(--tau-sidebar-shrink) var(--tau-sidebar-width);
+  min-width: var(--tau-sidebar-min-width);
+  display: flex; flex-direction: column; overflow: hidden;
+  color: var(--tau-side-fg); user-select: none;
+  /* min-width animates with the width, or opening jumps to it in one step. */
+  transition:
+    width 200ms var(--tau-ease),
+    flex-basis 200ms var(--tau-ease),
+    min-width 200ms var(--tau-ease);
+
+  /* HeroUI inside the sidebar turns frosted: its components read these. */
+  --foreground: var(--tau-side-fg);
+  --muted: var(--tau-side-fg-2);
+  --default: var(--tau-side-chip);
+  --default-foreground: var(--tau-side-fg);
+  --default-hover: var(--tau-side-row-hover);
+  --field-background: var(--tau-side-field);
+  --field-hover: var(--tau-side-field-hover);
+  --field-focus: var(--tau-side-field-hover);
+  --field-foreground: var(--tau-side-fg);
+  --field-placeholder: var(--tau-side-fg-2);
+  --field-border: var(--tau-side-field-ring);
+  /* HeroUI derives these at :root, so they are restated here, not inherited. */
+  --field-border-hover: var(--tau-side-field-ring);
+  --field-border-focus: var(--tau-side-field-ring);
+}
+.tau-sidebar.collapsed { width: 0; flex-basis: 0; min-width: 0; }
+
+.tau-main {
+  flex: 1;
+  /* A real floor gives a shrinking sidebar something to yield to. */
+  min-width: var(--tau-card-min-width);
+  margin: var(--tau-card-margin) var(--tau-card-margin) var(--tau-card-margin) 0;
+  background: var(--surface);
+  color: var(--surface-foreground);
+  border-radius: var(--tau-card-radius);
+  box-shadow: var(--tau-card-shadow);
+  display: flex; flex-direction: column; overflow: hidden; position: relative;
+  transition:
+    margin-top 200ms var(--tau-ease),
+    margin-left 200ms var(--tau-ease);
+}
+/* Folded sidebar: the card drops below the titlebar row, so the traffic lights
+   and titlebar controls stay on the frosted background. */
+.tau-sidebar.collapsed + .tau-main { margin-left: var(--tau-card-margin); margin-top: var(--tau-titlebar-height); }
+
+/* The strip along the top that the window drags by. In the card it is only
+   breathing room above the title. */
+.tau-drag-strip { height: var(--tau-titlebar-height); flex: 0 0 var(--tau-titlebar-height); }
+.tau-main > .tau-drag-strip { height: 20px; flex-basis: 20px; }
+
+/* One row across the top of the window for titlebar controls. Clicks fall
+   through to the sidebar and card; only the controls take events. */
+.tau-titlebar {
+  position: absolute; top: 0; left: 0; right: 0; height: var(--tau-titlebar-height); z-index: 20;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 24px 0 var(--tau-titlebar-left);
+  pointer-events: none;
+}
+.tau-titlebar > * { pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tau-sidebar, .tau-main { transition: none; }
+}

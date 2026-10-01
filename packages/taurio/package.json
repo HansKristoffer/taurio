@@ -1,7 +1,8 @@
 {
   "name": "@hanskristoffer/taurio",
   "version": "0.0.0",
-  "description": "Shared Tauri 2 desktop helpers: updater lifecycle, toasts, app shell, settings controls and theme.",
+  "description": "Tauri 2 app kit to pair with HeroUI: updater lifecycle, native dialogs, system theme, the vibrancy app shell and a macOS theme for HeroUI.",
+  "license": "MIT OR Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HansKristoffer/taurio.git",
@@ -9,7 +10,9 @@
   },
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "publishConfig": {
     "access": "public"
@@ -23,10 +26,9 @@
       "types": "./dist/react/index.d.ts",
       "default": "./dist/react/index.js"
     },
-    "./tokens.css": "./dist/styles/tokens.css",
-    "./base.css": "./dist/styles/base.css",
-    "./components.css": "./dist/styles/components.css",
-    "./styles.css": "./dist/styles/styles.css"
+    "./styles.css": "./dist/styles/styles.css",
+    "./theme.css": "./dist/styles/theme.css",
+    "./shell.css": "./dist/styles/shell.css"
   },
   "sideEffects": [
     "**/*.css"
@@ -37,7 +39,9 @@
     "test": "bun test"
   },
   "peerDependencies": {
+    "@heroui/styles": "^3.2.0",
     "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2",
     "@tauri-apps/plugin-process": "^2",
     "@tauri-apps/plugin-updater": "^2",
     "react": "^19"
@@ -45,11 +49,15 @@
   "peerDependenciesMeta": {
     "react": {
       "optional": true
+    },
+    "@heroui/styles": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^20.14.5",
     "@tauri-apps/api": "^2.12.1",
+    "@tauri-apps/plugin-dialog": "^2.8.1",
     "@tauri-apps/plugin-process": "^2.4.0",
     "@tauri-apps/plugin-updater": "^2.13.1",
     "@types/bun": "^1.4.2",

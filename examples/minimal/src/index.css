@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+/* After HeroUI: the macOS theme overrides its variables, then the app shell. */
+@import "@hanskristoffer/taurio/styles.css";

@@ -5,7 +5,11 @@ description = "Shared Tauri 2 native setup: window appearance and common plugin 
 authors = ["Hans Kristoffer"]
 edition = "2021"
 rust-version = "1.88"
-publish = false
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/HansKristoffer/taurio"
+readme = "../../README.md"
+keywords = ["tauri", "vibrancy", "desktop", "macos"]
+categories = ["gui"]
 
 [features]
 # Nothing by default: each consumer picks what it uses.

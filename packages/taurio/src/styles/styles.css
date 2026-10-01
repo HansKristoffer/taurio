@@ -1,4 +1,3 @@
-/* Tokens and components. Element defaults are a separate, explicit import:
-   @hanskristoffer/taurio/base.css. */
-@import "./tokens.css";
-@import "./components.css";
+/* The macOS theme for HeroUI and the app shell. Import after @heroui/styles. */
+@import "./theme.css";
+@import "./shell.css";

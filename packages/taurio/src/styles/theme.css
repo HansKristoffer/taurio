@@ -1,0 +1,80 @@
+/* A macOS look for HeroUI v3: the palette Agentgate and Wallflower share,
+   written onto HeroUI's theme variables (@heroui/styles 3.2). Import it after
+   @heroui/styles. HeroUI declares its theme in @layer base, so these unlayered
+   rules win wherever they are imported.
+
+   Light is :root; dark follows HeroUI's own switch, the `dark` class or
+   data-theme="dark", which followSystemTheme() keeps in step with the system. */
+:root {
+  --background: #f2f2f7;
+  --foreground: #1d1d1f;
+  --surface: #ffffff;
+  --surface-foreground: var(--foreground);
+  --surface-secondary: #f5f5f7;
+  --surface-tertiary: #ececef;
+  --overlay: #ffffff;
+  --overlay-foreground: var(--foreground);
+  --muted: #6e6e73;
+  --default: #f1f1f3;
+  --default-foreground: #3a3a3f;
+
+  --accent: #2f6fed;
+  --accent-foreground: #ffffff;
+  --success: #30a46c;
+  --success-foreground: #ffffff;
+  --warning: #f5a524;
+  --warning-foreground: #1d1d1f;
+  --danger: #e5484d;
+  --danger-foreground: #ffffff;
+
+  /* Fields keep a hairline border instead of HeroUI's shadow, as in both apps. */
+  --field-background: #ffffff;
+  --field-foreground: var(--foreground);
+  --field-placeholder: #a1a1a6;
+  --field-border: #e3e3e7;
+  --field-border-width: 1px;
+  --field-shadow: 0 0 0 0 transparent;
+
+  --border: #ececef;
+  --separator: #ececef;
+  --segment: #ffffff;
+  --focus: var(--accent);
+  --backdrop: rgba(0, 0, 0, 0.18);
+
+  --radius: 7px;
+  --field-radius: 7px;
+  --overlay-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.dark,
+[data-theme="dark"] {
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --surface: #1c1c1e;
+  --surface-secondary: #2c2c2e;
+  --surface-tertiary: #38383a;
+  /* Menus and popovers a step lighter than the window, as macOS draws them. */
+  --overlay: #2c2c2e;
+  --muted: #98989d;
+  --default: #2c2c2e;
+  --default-foreground: #e5e5ea;
+
+  --accent: #0a84ff;
+  --success: #30d158;
+  --success-foreground: #1c1c1e;
+  --warning: #ffb340;
+  --danger: #ff453a;
+
+  --field-background: #1c1c1e;
+  --field-placeholder: #636366;
+  --field-border: #3a3a3c;
+
+  --border: #38383a;
+  --separator: #38383a;
+  --segment: #58585c;
+  --backdrop: rgba(0, 0, 0, 0.4);
+  /* HeroUI drops card shadows in dark mode; a card inside the app's card would
+     then vanish into it, so it keeps a hairline. */
+  --surface-shadow: 0 0 0 1px var(--border);
+  --overlay-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
